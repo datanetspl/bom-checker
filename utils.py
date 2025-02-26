@@ -89,7 +89,7 @@ def retrieve_all_records(session, request_url, request_header):
 
     return all_records
 
-
+@st.cache_data
 def get_expendables_list(expendables_list_path, ctx, url, verbose=False):
     expendables_list_relative_path = expendables_list_path.replace(url, "")
 
