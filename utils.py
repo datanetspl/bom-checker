@@ -217,7 +217,7 @@ def handle_integer_hierarchical_numbers(s):
     else:
         return s
 
-
+@st.cache_data
 def get_BC_data_api_generic(tenant_id, client_id, client_secret, environment):
     # define the retry strategy
     retry_strategy = Retry(
