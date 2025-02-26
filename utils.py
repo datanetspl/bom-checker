@@ -444,7 +444,7 @@ def bom_checker(bom_path: str):
         (secondary_uom_df, item_master_df) = get_BC_data_api_generic(tenant_id, client_id, client_secret, environment)
 
         # grab expendables list from Sharepoint
-        expendables_df = get_expendables_list(expendables_list_path, output_ctx, output_sharepoint_site_url, verbose=False)
+        expendables_df = get_expendables_list()
 
         # Process System BOM
         sys_bom_df = process_hierarchical_bom(sys_bom_df, sys_bom_sheet, secondary_uom_df, item_master_df, expendables_df, verbose, False)
