@@ -89,9 +89,12 @@ def retrieve_all_records(session, request_url, request_header):
 
     return all_records
 
-@st.cache_data
-def get_expendables_list(expendables_list_path, ctx, url, verbose=False):
-    expendables_list_relative_path = expendables_list_path.replace(url, "")
+@st.cache_resource
+def get_expendables_list():
+    expendables_list_path = r"https://akribissg.sharepoint.com/sites/AkribisSGCTBPortal/Shared%20Documents/Stage%20Non-Inventorized%20Expendables%20List.xlsx"
+    expendables_url = r"https://akribissg.sharepoint.com/sites/AkribisSGCTBPortal"
+    ctx = login_to_sharepoint(expendables_url, username, password, verbose=False)
+    expendables_list_relative_path = expendables_list_path.replace(output_sharepoint_site_url, "")
 
     # download expendables_list to local file
     filename = "expendables_list.xlsx"
@@ -217,7 +220,7 @@ def handle_integer_hierarchical_numbers(s):
     else:
         return s
 
-@st.cache_data
+@st.cache_resource
 def get_BC_data_api_generic(tenant_id, client_id, client_secret, environment):
     # define the retry strategy
     retry_strategy = Retry(
