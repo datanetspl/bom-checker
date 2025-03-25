@@ -5,7 +5,9 @@ PLEASE INCLUDE SECRETS.PKL IN THIS FOLDER
 import streamlit as st
 import sys
 import pandas as pd
-from utils import generate_engg_punchlist, bom_checker
+from utils import generate_engg_punchlist, bom_checker, client_id, tenant_id
+from msal_streamlit_authentication import msal_authentication
+
 
 engg_punchlist = pd.DataFrame()
 
@@ -41,3 +43,20 @@ if st.session_state["punchlist"] == 1:
         st.dataframe(engg_punchlist)
     else:
         st.write("No Punchlist Items")
+
+
+
+login_token = msal_authentication(
+    auth={
+        "clientId": client_id,
+        "authority": f"https://login.microsoftonline.com/{tenant_id}",
+        "redirectUri": "https://bomchecker.streamlit.app",
+        "postLogoutRedirectUri": "https://bomchecker.streamlit.app",
+    },
+    cache={"cacheLocation": "sessionStorage", "storeAuthStateInCookie": False},
+    login_button_text="Login",
+    logout_button_text="Logout",
+    class_name="css_button_class_selector",
+    html_id="html_id_for_button",
+)
+st.write("Login token:", login_token)
