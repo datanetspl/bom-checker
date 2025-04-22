@@ -20,6 +20,27 @@ if "punchlist" not in st.session_state:
 
 st.title("BOM CHECKER")
 
+login_token = msal_authentication(
+    auth={
+        "clientId": client_id,
+        "authority": f"https://login.microsoftonline.com/{tenant_id}",
+        "redirectUri": "https://bomchecker.streamlit.app",
+        "postLogoutRedirectUri": "https://bomchecker.streamlit.app",
+    },
+    cache={"cacheLocation": "sessionStorage", "storeAuthStateInCookie": False},
+    login_button_text="Login",
+    logout_button_text="Logout",
+    class_name="css_button_class_selector",
+    html_id="html_id_for_button",
+)
+#st.write("Login token:", login_token)
+
+if not login_token:
+    st.error("You must be logged in to use this app.")
+    st.stop()
+
+st.write(f"Welcome {login_token['account']['name']}!")
+
 # Form to enter full BOM Path
 with st.form("bom_url_form"):
     st.write("BOM Checker")
@@ -46,17 +67,3 @@ if st.session_state["punchlist"] == 1:
 
 
 
-login_token = msal_authentication(
-    auth={
-        "clientId": client_id,
-        "authority": f"https://login.microsoftonline.com/{tenant_id}",
-        "redirectUri": "https://bomchecker.streamlit.app",
-        "postLogoutRedirectUri": "https://bomchecker.streamlit.app",
-    },
-    cache={"cacheLocation": "sessionStorage", "storeAuthStateInCookie": False},
-    login_button_text="Login",
-    logout_button_text="Logout",
-    class_name="css_button_class_selector",
-    html_id="html_id_for_button",
-)
-st.write("Login token:", login_token)
